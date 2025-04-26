@@ -1,21 +1,22 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate }  from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-const AdminVerificationModal = ({ 
-  isOpen = false,,
+const AdminVerificationModal = ({
+  isOpen = false,
+  isAdmin = false,
   setIsAdmin = () => {},
-  onClose = () => {} , 
-  setSuccess = () => {}, 
-  setErr = () => {} 
+  onClose = () => {},
+  setSuccess = () => {},
+  setErr = () => {},
 }) => {
   const [adminUser, setAdminUser] = useState('');
   const [password, setPassword] = useState('');
-  const [clicked, setClicked] = useState('false')
+  const [clicked, setClicked] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem('adminName')) return;
-  }, []);
+    if (isAdmin) return;
+  }, [isAdmin])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,56 +24,82 @@ const AdminVerificationModal = ({
     console.log('Admin authentication attempt with:', { adminUser, password });
 
     if (!adminUser) {
-      setErr( prevErrors => ({
+      console.log ('error1')
+      setErr((prevErrors) => ({
         ...prevErrors,
         event: 'Admin Verification',
-        message: 'Give a proper name !!!'
+        message: 'Give a proper name !!!',
       }));
       setClicked(false);
+      return;
     }
     
     if (!password) {
-      setErr( prevErrors => ({
+      console.log ('error2')
+      setErr((prevErrors) => ({
         ...prevErrors,
         event: 'Admin Verification',
-        message: 'Give a proper name !!!'
+        message: 'Give your password !!!',
       }));
       setClicked(false);
+      return;
     }
-    
-    // DEVELOPMENT STAGE LOGIN TO BYPASS THE ADMIN AUTHENTICATION PART...
+
     if (adminUser === 'admin' && password === 'admin123') {
-      setSuccess( prevSuccess => ({
+      console.log('success')
+      setSuccess((prevSuccess) => ({
         ...prevSuccess,
         event: 'Admin Verification',
-        message: 'Authenticated as an admin !!!'
-      }))
+        message: 'Authenticated as an admin !!!',
+      }));
       setIsAdmin(true);
-      navigate('/showfeedbacks');
+      localStorage.setItem('adminName', adminUser);
+      navigate('/show-feedbacks');
+    } else {
+      setErr((prevErrors) => ({
+        ...prevErrors,
+        event: 'Admin Verification',
+        message: 'Wrong credentials !!!',
+      }));
+      setClicked(false);
     }
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4 ${isOpen ? 'animate-modal-popup' : 'animate-modal-popdown'}`}>
+    <div
+      className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4 ${
+        isOpen ? 'animate-modal-popup' : 'animate-modal-popdown'
+      }`}
+    >
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 sm:p-8 w-full max-w-md max-h-screen overflow-y-auto shadow-lg">
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Login to MemoTag</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+            Dummy Admin Verification
+          </h2>
           <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="adminUser" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label
+              htmlFor="adminUser"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            >
               Name
             </label>
             <input
@@ -87,7 +114,10 @@ const AdminVerificationModal = ({
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            >
               Password
             </label>
             <input
@@ -116,19 +146,13 @@ const AdminVerificationModal = ({
 
           <button
             type="submit"
-            className="w-full py-2 px-4 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className={`w-full py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200 flex justify-center items-center ${
+              clicked ? 'pointer-events-none bg-blue-700 text-gray-400' : 'cursor-pointer bg-blue-600 text-white'
+            }`}
           >
             Verify
           </button>
         </form>
-
-        <button
-          type="submit"
-          className={`w-full py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200 flex justify-center items-center ${clicked ? 'pointer-events-none' : 'cursor-pointer'} ${clicked ? 'bg-blue-700' : 'bg-blue-600'} ${clicked ? 'text-gray-400' : 'text-white'}`}
-          onSubmit={ handleSubmit }
-        >
-          Verify
-        </button>
       </div>
     </div>
   );

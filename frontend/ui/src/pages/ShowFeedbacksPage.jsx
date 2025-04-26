@@ -4,20 +4,19 @@ import Footer from '../components/Footer.jsx';
 import { useLightDarkMode } from '../contexts/LightDarkToggle.context.jsx';
 import ShowHideFeedbackToggle from '../components/ShowHideFeedbackToggle.jsx';
 
-function SubmitFeedbacPage({ isAdmin, handleToggleAdmin }) {
+function ShowFeedbacPage({ isAdmin, handleToggleAdmin }) {
   const { aptTheme } = useLightDarkMode();
 
   return (
     <div className={`min-h-screen w-screen ${aptTheme.bg_img} bg-cover`}>
       <div className={`min-h-screen flex flex-col bg-transparent`}>
-        <div className="container mx-auto flex-grow">
+        {/* <div className="container mx-auto flex-grow"> */}
+        <div className="flex-grow flex flex-col">
           <Header />
 
           <div className="relative">
             <ShowHideFeedbackToggle handleToggleAdmin={ handleToggleAdmin } isAdmin={ isAdmin } />
-            {
-              <FeedbackList />
-            }
+            <FeedbackList />
           </div>
         </div>
         <Footer />
@@ -26,4 +25,5 @@ function SubmitFeedbacPage({ isAdmin, handleToggleAdmin }) {
   );
 }
 
-export default SubmitFeedbacPage;
+export default ShowFeedbacPage;
+

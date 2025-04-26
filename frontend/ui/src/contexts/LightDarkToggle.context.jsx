@@ -4,13 +4,14 @@ const LightDarkModeContext = createContext();
 const themes = {
   light: {
     headingText: 'text-black',
-    paragraphText: 'text-gray-400',
-    paragraphText2: 'text-gray-500',
+    paragraphText: 'text-slate-900',
+    paragraphText2: 'text-slate-850',
     baseColor: 'bg-purple-[#DCCCF5]/50',
     boxShadow: 'shadow-stone-900',
-
-    footer_gradient: 'bg-linear-to-t from-black to-gray-700/0',
-    header_gradient: 'bg-linear-to-b from-black to-gray-700/0',
+    border: 'border-slate-600',
+    active_border: 'border-2 border-slate-600',
+    footer_gradient: 'bg-linear-to-t from-indigo-500 to-indigo-100/0',
+    header_gradient: 'bg-linear-to-b from-indigo-500 to-indigo-100/0',
     bg_img: 'bg-[url(https://thumb.ac-illust.com/4d/4db863af9abb2caae291b32a58087a8e_t.jpeg)]',
   },
   dark: {
@@ -19,7 +20,8 @@ const themes = {
     paragraphText2: 'text-gray-300', 
     baseColor: 'bg-gray-900/50',
     boxShadow: 'shadow-stone-900',
-    
+    border: 'border-gray-600',
+    active_border: 'border-2 border-white',
     footer_gradient: 'bg-linear-to-t from-black to-gray-700/0',
     header_gradient: 'bg-linear-to-b from-black to-gray-700/0',
     bg_img: 'bg-[url(https://i.ytimg.com/vi/CoOllJNUiV8/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGDcgZihyMA8=&rs=AOn4CLA8q3DX2sDHPqc3UBkyGRz_YOKECQ)]',
@@ -45,11 +47,10 @@ export const LightDarkModeProvider = ({ children }) => {
 
   const toggleDarkMode = () => {
     setDarkMode((prevMode) => !prevMode);
-    // Removed duplicate localStorage setting that used incorrect key name 'darkmode'
   };
 
   useEffect(() => {
-    window.localStorage.setItem('darkMode', String(darkMode)); // Fixed: Using window.localStorage and explicitly converting boolean to string
+    window.localStorage.setItem('darkMode', String(darkMode)); 
     setAptTheme(darkMode ? themes.dark : themes.light);
   }, [darkMode]);
 

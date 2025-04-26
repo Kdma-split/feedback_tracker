@@ -14,7 +14,7 @@ function SubmitFeedbacPage({ isAdmin, handleToggleAdmin }) {
           <Header />
 
           <div className="relative">
-            <ShowHideFeedbackToggle handleToggleAdmin={ handleToggleAdmin }  isAdminn={ isAdmin }/>
+            <ShowHideFeedbackToggle handleToggleAdmin={ handleToggleAdmin }  isAdmin={ isAdmin }/>
             <FeedbackForm />
           </div>
         </div>

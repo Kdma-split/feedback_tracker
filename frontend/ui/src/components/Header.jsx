@@ -5,7 +5,7 @@ function Header() {
   const { aptTheme } = useLightDarkMode();
 
     return (
-      <header className={`mb-4 relative bg-linear-to-b from-black to-gray-700/0 backdrop-blur-xs animate-fade-in-scale`}>
+      <header className={`mb-4 relative ${aptTheme.header_gradient} to-gray-700/0 backdrop-blur-xs animate-fade-in-scale`}>
         <div className="py-5">
           <h1 className={`${aptTheme.headingText} text-3xl font-bold text-center dark:text-white`}>Feedback Collector</h1>
           <p className={`text-center ${aptTheme.paragraphText} mt-2`}>

@@ -3,13 +3,15 @@ import { useState, useEffect } from 'react';
 import { useLightDarkMode } from '../contexts/LightDarkToggle.context.jsx';
 
 function FeedbackList({ loading }) {
-  const [feedbacksList, setFeedbacksList] = useState({});
+  const [feedbacksList, setFeedbacksList] = useState([]);
   const { aptTheme } = useLightDarkMode();
 
   useEffect(() => {
     const fetchFeedbacks = async () => {
       try {
+        console.log(`${import.meta.env.VITE_API_QUERY_ENDPOINT + '/feedbacks'}`);
         const { data } = await fetch(`${import.meta.env.VITE_API_QUERY_ENDPOINT + '/feedbacks'}`);
+        console.log(data)
         const response = JSON.parse(data);
         console.log ("DATA FETCHING STATUS [ALL FEEDBACKS]", response.status);
         if (response.status === 'success') {
